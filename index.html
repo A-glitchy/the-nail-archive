@@ -11,24 +11,63 @@
 </head>
 <body><main class="page-shell">
 <header class="topbar"><a class="wordmark" href="#">THE NAIL ARCHIVE<span>✳</span></a><div class="top-actions"><span id="user-label" class="user-label"></span><button id="signout" class="text-button hidden">Sign out</button></div></header>
+
 <section id="auth-view" class="auth-view"><div class="auth-copy"><p class="eyebrow">A PERSONAL COLLECTION</p><h1>Every set has<br><em>a place.</em></h1><p class="intro">A little archive for the designs you love, the ones you want to try, and the manicures you want to remember.</p></div>
 <form id="auth-form" class="auth-card"><p class="eyebrow">YOUR PRIVATE ARCHIVE</p><h2 id="auth-heading">Welcome back</h2>
 <label>Email<input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
 <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" required minlength="6"></label>
 <button id="auth-submit" class="primary-button" type="submit">Sign in</button><button id="auth-toggle" class="text-button centered" type="button">New here? Create an account</button><p id="auth-message" class="message" role="status"></p></form>
 <p class="privacy-note">Your collection is private to your account. Only the app's code is public.</p></section>
-<section id="app-view" class="hidden"><div class="welcome-row"><div><p class="eyebrow">YOUR LITTLE CORNER</p><h1>Keep the good <em>ideas.</em></h1></div><button id="add-inspo" class="primary-button add-button">＋ Add inspiration</button></div>
+
+<section id="app-view" class="hidden"><div class="welcome-row"><div><p class="eyebrow">YOUR LITTLE CORNER</p><h1>Keep the good <em>ideas.</em></h1></div><div class="welcome-actions"><button id="open-mix" class="outline-button add-button">＋ Mix 2 designs</button><button id="add-inspo" class="primary-button add-button">＋ Add inspiration</button></div></div>
 <nav class="main-tabs"><button class="main-tab active" data-view="all">All <span id="count-all">0</span></button><button class="main-tab" data-view="wishlist">Wishlist</button><button class="main-tab" data-view="diary">Diary</button></nav>
+
 <div id="gallery-view"><div class="filter-row"><div class="season-filters"><button class="season active" data-season="all">All seasons</button><button class="season" data-season="Spring">Spring</button><button class="season" data-season="Summer">Summer</button><button class="season" data-season="Autumn">Autumn</button><button class="season" data-season="Winter">Winter</button></div><span id="result-count" class="result-count"></span></div><div id="inspo-grid" class="inspo-grid"></div></div>
+
 <section id="diary-view" class="hidden"><div class="diary-heading"><div><p class="eyebrow">THE REAL-LIFE EDIT</p><h2>From pin to <em>polish.</em></h2></div><button id="add-diary" class="outline-button">＋ Log a manicure</button></div><div id="diary-list" class="diary-list"></div></section></section>
 <footer>MADE TO KEEP YOUR FAVOURITES CLOSE <span>✳</span></footer></main>
+
+<!-- ADD INSPIRATION MODAL -->
 <dialog id="inspo-dialog" class="modal"><form id="inspo-form" class="modal-card"><button class="close-button" type="button" data-close="inspo-dialog">×</button><p class="eyebrow">SAVE THE IDEA</p><h2>Add to your <em>archive.</em></h2>
-<label>Design name<input id="design-name" placeholder="e.g. Mocha shine + blue dots" required></label><label>Photos<input id="design-photos" type="file" accept="image/*" multiple required></label><p class="field-hint">You can select several photos at once. They'll be stored privately.</p>
+<label>Photos<input id="design-photos" type="file" accept="image/*" multiple required></label>
+<p class="field-hint">Select 1 photo, or select 2+ photos to automatically generate a side-by-side collage + slideshow.</p>
+<div id="inspo-editor-box" class="editor-box hidden"></div>
 <fieldset><legend>Season</legend><div class="check-grid"><label><input type="checkbox" name="season" value="Spring"> Spring</label><label><input type="checkbox" name="season" value="Summer"> Summer</label><label><input type="checkbox" name="season" value="Autumn"> Autumn</label><label><input type="checkbox" name="season" value="Winter"> Winter</label></div></fieldset>
-<label>Collection<select id="design-status"><option value="wishlist">Wishlist</option><option value="tried">Tried</option></select></label><button class="primary-button full-button" type="submit">Save inspiration</button><p id="inspo-message" class="message"></p></form></dialog>
+<label>Collection<select id="design-status"><option value="wishlist">Wishlist</option><option value="tried">Tried</option></select></label>
+<button class="primary-button full-button" type="submit">Save inspiration</button><p id="inspo-message" class="message"></p></form></dialog>
+
+<!-- MIX TWO EXISTING DESIGNS MODAL -->
+<dialog id="mix-dialog" class="modal"><form id="mix-form" class="modal-card"><button class="close-button" type="button" data-close="mix-dialog">×</button><p class="eyebrow">COMBINE IDEAS</p><h2>Mix two <em>designs.</em></h2>
+<p class="field-hint">Pick any 2 saved photos from your archive to create a split-screen collage alongside the original slideshow.</p>
+<div id="mix-picker-grid" class="mix-picker-grid"></div>
+<fieldset><legend>Season</legend><div class="check-grid"><label><input type="checkbox" name="mix-season" value="Spring"> Spring</label><label><input type="checkbox" name="mix-season" value="Summer"> Summer</label><label><input type="checkbox" name="mix-season" value="Autumn"> Autumn</label><label><input type="checkbox" name="mix-season" value="Winter"> Winter</label></div></fieldset>
+<button class="primary-button full-button" type="submit">Create mixed set</button><p id="mix-message" class="message"></p></form></dialog>
+
+<!-- LOG MANICURE DIARY MODAL -->
 <dialog id="diary-dialog" class="modal"><form id="diary-form" class="modal-card"><button class="close-button" type="button" data-close="diary-dialog">×</button><p class="eyebrow">A MANICURE MEMORY</p><h2>Log your <em>set.</em></h2>
-<label>Design name<input id="diary-name" placeholder="What did you get?" required></label><label>Date done<input id="diary-date" type="date" required></label>
+<label>Finished nail photos<input id="diary-photos" type="file" accept="image/*" multiple></label>
+<div id="diary-editor-box" class="editor-box hidden"></div>
+<label>Or pick from your inspiration archive<select id="diary-inspo-link"><option value="">None</option></select></label>
+<label>Date done<input id="diary-date" type="date" required></label>
 <div class="two-fields"><label>Start time<input id="diary-start" type="time"></label><label>Finish time<input id="diary-finish" type="time"></label></div>
 <div class="two-fields"><label>Price<input id="diary-price" type="number" min="0" step="any" placeholder="Optional"></label><label>Season<select id="diary-season"><option value="">Choose</option><option>Spring</option><option>Summer</option><option>Autumn</option><option>Winter</option></select></label></div>
-<button class="primary-button full-button" type="submit">Save to diary</button><p id="diary-message" class="message"></p></form></dialog><div id="toast" class="toast" role="status"></div>
+<button class="primary-button full-button" type="submit">Save to diary</button><p id="diary-message" class="message"></p></form></dialog>
+
+<!-- FULL-SCREEN NAIL TECH LIGHTBOX -->
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true">
+  <div class="lightbox-top">
+    <span id="lightbox-counter" class="lightbox-counter">1 / 1</span>
+    <span class="lightbox-hint">Tap photo to zoom · Swipe or use arrows</span>
+    <button id="lightbox-close" class="lightbox-close" type="button" aria-label="Close">×</button>
+  </div>
+  <div id="lightbox-stage" class="lightbox-stage">
+    <button id="lightbox-prev" class="lightbox-nav prev" type="button" aria-label="Previous">‹</button>
+    <div id="lightbox-img-wrap" class="lightbox-img-wrap">
+      <img id="lightbox-img" alt="Full screen nail design">
+    </div>
+    <button id="lightbox-next" class="lightbox-nav next" type="button" aria-label="Next">›</button>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status"></div>
 </body></html>
